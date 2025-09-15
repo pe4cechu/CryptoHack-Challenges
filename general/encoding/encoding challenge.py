@@ -2,15 +2,18 @@ import codecs
 from pwn import *
 import json
 
-r = remote('socket.cryptohack.org', 13377, level='debug')
+r = remote("socket.cryptohack.org", 13377, level="debug")
+
 
 def json_recv():
     line = r.recvline()
     return json.loads(line.decode())
 
+
 def json_send(hsh):
     request = json.dumps(hsh).encode()
     r.sendline(request)
+
 
 def decode_value(enc_type, value):
     if enc_type == "rot13":
@@ -26,6 +29,7 @@ def decode_value(enc_type, value):
         return base64.b64decode(value).decode("utf-8")
     else:
         return value
+
 
 while True:
     received = json_recv()
